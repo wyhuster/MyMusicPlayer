@@ -147,7 +147,8 @@ public class LocalMusicListActivity extends Activity{
      
      private void init_list(){
     	    adapter.setList(new ArrayList<Map<String,Object>>(),"");
-			String id = getIntent().getStringExtra("id");
+			String id="";
+			id = getIntent().getStringExtra("id");
 			if(id.equals(LocalMusicActivity.SINGER_MUSIC)){
 				adapter.setList(LocalMusicActivity.singerMusicMap,id);
 			}

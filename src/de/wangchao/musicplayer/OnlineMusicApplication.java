@@ -9,6 +9,9 @@ import de.wangchao.musicplayer.thumbnail.ThumbnailMessage;
 import de.wangchao.musicplayer.util.Tools;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 
 public class OnlineMusicApplication extends Application{
@@ -44,4 +47,18 @@ public class OnlineMusicApplication extends Application{
      public MySimpleWebImageCache<ThumbnailBus, ThumbnailMessage> getCache() {
         return (cache);
      }
+     
+     public boolean isNetworkAvailable(Context context) {
+ 		ConnectivityManager mgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+ 		NetworkInfo[] info = mgr.getAllNetworkInfo();
+ 		if (info != null) {
+ 			for (int i = 0; i < info.length; i++) {
+ 				if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+ 					return true;
+ 				}
+ 			}
+ 		}
+ 		return false;
+ 	}
+
 }

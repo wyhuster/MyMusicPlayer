@@ -152,7 +152,7 @@ public final class R {
         public static final int btn_shuffle=0x7f08001b;
         public static final int btn_stop=0x7f080025;
         public static final int currenttime=0x7f080016;
-        public static final int gridView1=0x7f080007;
+        public static final int gridView1=0x7f080008;
         public static final int header=0x7f080028;
         public static final int img_album=0x7f08002b;
         public static final int img_select=0x7f08002c;
@@ -172,7 +172,7 @@ public final class R {
         public static final int mini_album=0x7f08001f;
         public static final int music_list=0x7f080027;
         public static final int next=0x7f08001a;
-        public static final int panel=0x7f080008;
+        public static final int panel=0x7f080007;
         public static final int pause=0x7f080019;
         public static final int prev=0x7f080018;
         public static final int totaltime=0x7f080015;

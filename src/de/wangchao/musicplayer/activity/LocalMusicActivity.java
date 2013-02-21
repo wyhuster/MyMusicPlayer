@@ -26,13 +26,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+
 import android.provider.MediaStore;
 
 import android.util.DisplayMetrics;
-import android.util.Log;
+
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -119,11 +119,13 @@ public class LocalMusicActivity extends Activity{
 					intent.putExtra("id", PLAYLIST_MUSIC);
 					break;
 				case 5:
-					intent=new Intent(LocalMusicActivity.this,SettingsActivity.class);
+					//intent=new Intent(LocalMusicActivity.this,SettingsActivity.class);
+					Toast.makeText(getApplicationContext(), "unfinished", Toast.LENGTH_SHORT).show();
 					break;
 				default:
 					break;
-				}		
+				}
+				if(position!=5)
 				startActivity(intent);
 				return;
 		}
@@ -279,4 +281,5 @@ public class LocalMusicActivity extends Activity{
 			}
 		}
    }
+
 }

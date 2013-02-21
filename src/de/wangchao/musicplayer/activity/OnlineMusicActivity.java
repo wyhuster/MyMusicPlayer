@@ -54,6 +54,7 @@ public class OnlineMusicActivity extends Activity{
 	 private AddMusicToDBTask addMusicTask;
 	 private static int MSG_GET_MUSIC=0;
 	 private static int MSG_ADD_DATABASE=1;
+	 private OnlineMusicApplication app; 
 	 private OnlineMusicApi onlineMusicApi;
 	 private ThumbnailAdapter listThumbnailAdapter = null;
 	 private MusicsAdapter musicWrapper = null;
@@ -129,8 +130,10 @@ public class OnlineMusicActivity extends Activity{
 	    	miniPlayPannelWrapper=new MiniPlayPannelWrapper(panel);
 	    	loadingDialog = new ProgressDialog(OnlineMusicActivity.this);
 	    	loadingDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	    	loadingDialog.setTitle("加载中...");
 	    	
-	        onlineMusicApi = ((OnlineMusicApplication)this.getApplication()).getOnlineMusicApi();
+	    	app=(OnlineMusicApplication)this.getApplication();
+	        onlineMusicApi = app.getOnlineMusicApi();
 	        database=new DataBase(this);
 	        
 	        lv_music.setOnItemClickListener(new OnItemClickListener(){
@@ -147,6 +150,7 @@ public class OnlineMusicActivity extends Activity{
 	        	
 	        });
 	        
+	       new ReadContact(OnlineMusicActivity.this); 
 	       handler.sendEmptyMessage(MSG_GET_MUSIC);
 	    }
 	        
@@ -187,8 +191,13 @@ public class OnlineMusicActivity extends Activity{
 	        if (loadingDialog != null && loadingDialog.isShowing()) {
 	            loadingDialog.dismiss();
 	        }
-
-	        if (mBound) {
+	        
+            if(getMusicsTask!=null)
+            	getMusicsTask.cancel(true);
+	        if(addMusicTask!=null)
+	        	addMusicTask.cancel(true);
+	        
+            if (mBound) {
 	            getApplicationContext().unbindService(mConnection);
 	            mBound = false;
 	        }
@@ -236,7 +245,8 @@ public class OnlineMusicActivity extends Activity{
 		        mTrackList.clear();
 		        mTrackList.addAll(music);
 		        
-		        //loadingDialog.show(); 
+		        if(music==null||music.size()==0)
+		             loadingDialog.show(); 
 		    }
 		
 		    @Override
@@ -244,7 +254,8 @@ public class OnlineMusicActivity extends Activity{
 		
 		    	ArrayList<Music> result = null;
 		        try {
-		            result = onlineMusicApi.getMusics();
+		        	if(app.isNetworkAvailable(OnlineMusicActivity.this))
+		                result = onlineMusicApi.getMusics();
 		        } catch (IOException e) {
 		            exception = e;
 		        } catch (Exception e) {
@@ -260,7 +271,12 @@ public class OnlineMusicActivity extends Activity{
 		        if (loadingDialog.isShowing()) {
 		            loadingDialog.dismiss();
 		        }
-		
+		        
+		        if(!app.isNetworkAvailable(OnlineMusicActivity.this)){
+		        	Toast.makeText(getApplicationContext(), "请检查网络", Toast.LENGTH_LONG).show();
+		            return;
+		        }
+		        
 		        if (exception != null) {
 		            Toast.makeText(getApplicationContext(), "加载失败"+exception.getMessage(), Toast.LENGTH_LONG).show();
 		            return;
